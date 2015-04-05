@@ -1,0 +1,19 @@
+Additional Questions:
+
+1.
+If we have to use caching, we can first sort the array, and proceed in a bottom-up fashion, so that no item is calculated twice, and there is a re-use of the factors already calculated. In my program, I have stored the cached factors for each number in a list, and all of these number:list pairs reside in a hash map. 
+
+2. 
+Performance of cache. 
+For each array index i, the program accesses i-1 elements before it. 
+If we consider the amortized time complexity, it saves on a lot of accesses
+
+e.g. 
+For 5 array elements, brute-force accesses 25 (n^2) while caching implementation accesses 15 [n(n+1)/2] elements
+For 100 array elements, brute-force accesses 10000 (n^2) while caching implementation accesses 5050 [n(n+1)/2] elements		
+
+There is one way to add a heuristic to the caching implementation and make it more performant. We can consider the first few prime numbers [2,3,5,7,11] which are the factors to most of the numbers, except prime numbers. We can divide the number by these numbers and check if the obtained number is present in the array. If it is we can just access it directly, without having the need to go through all (i-1) elements. Also, we can later check each of the factors for the obtained number and access them directly. This would give us a quick boost in time complexity.
+
+
+3. 
+If the functionality is reversed, the caching implementation would still remain the same. But, we would have to sort the array of elements in descending order, so that, an element at index i accesses all (i-10 elements and checks whether it is a factor of them or not. The caching algorithm would still remain the same, and we can also apply the same heuristic to speed up some accesses to improve the performance.
