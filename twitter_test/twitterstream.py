@@ -14,6 +14,8 @@ access_token_secret = "TOsZX0yMrJME0keRa9UkP1JL7nLgMlRYn9QDAOxDr5FDh"
 
 _debug = 0
 
+
+# Generating the oauth token
 oauth_token    = oauth.Token(key=access_token_key, secret=access_token_secret)
 oauth_consumer = oauth.Consumer(key=api_key, secret=api_secret)
 
@@ -25,10 +27,9 @@ http_method = "GET"
 http_handler  = urllib.HTTPHandler(debuglevel=_debug)
 https_handler = urllib.HTTPSHandler(debuglevel=_debug)
 
-'''
-Construct, sign, and open a twitter request
-using the hard-coded credentials above.
-'''
+
+#Construct, sign, and open a twitter streaming API request using the hard-coded credentials above.
+
 
 def twitterreq(url, method, parameters):
   req = oauth.Request.from_consumer_and_token(oauth_consumer,
@@ -56,6 +57,7 @@ def twitterreq(url, method, parameters):
 
 
 def fetchsamples():
+  # This URL fetches all the samples in English
   URL = "https://stream.twitter.com/1.1/statuses/sample.json?language=en"
   parameters = []
   
@@ -66,13 +68,15 @@ def fetchsamples():
   percent = 0
   
   start = time.clock()
+
+  # Receiving the response from the Twitter Stream API
   response = twitterreq(URL, "GET", parameters)
   
   print "Saving tweets from Twitter Streaming API..." 
   for line in response:
     writeLine = line.strip()
     output.write(writeLine+"\n")
-    if(int(time.clock() - start) >= 10):
+    if(int(time.clock() - start) >= 300):
       output.close()
       return
     
